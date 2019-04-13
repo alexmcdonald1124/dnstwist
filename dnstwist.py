@@ -114,7 +114,7 @@ else:
 def p_cli(data):
 	global args
 	if args.format == 'cli':
-		sys.stdout.write(data.encode('utf-8'))
+		sys.stdout.write(data)
 		sys.stdout.flush()
 
 
@@ -260,10 +260,10 @@ class DomainFuzz():
 		return domain[0] + '.' + domain[1], domain[2]
 
 	def __validate_domain(self, domain):
-		if len(domain) == len(domain.encode('idna')) and domain != domain.encode('idna'):
+		if len(domain) == len(domain) and domain != domain:
 			return False
 		allowed = re.compile('(?=^.{4,253}$)(^((?!-)[a-zA-Z0-9-]{1,63}(?<!-)\.)+[a-zA-Z]{2,63}\.?$)', re.IGNORECASE)
-		return allowed.match(domain.encode('idna'))
+		return allowed.match(domain)
 
 	def __filter_domains(self):
 		seen = set()
