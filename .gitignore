@@ -2,3 +2,5 @@ venv/
 
 # PyCharm project directory
 .idea
+
+configs/config.json

@@ -33,6 +33,7 @@ from random import randint
 from os import path
 import smtplib
 import json
+import investigate
 
 try:
 	import queue
@@ -110,6 +111,8 @@ else:
 	ST_BRI = ''
 	ST_RST = ''
 
+config_file = json.load(open('configs/config.json'))
+investigate_key = config_file['investigate_key']
 
 def p_cli(data):
 	global args
@@ -989,7 +992,16 @@ def main():
 		elif args.format == 'json':
 			p_json(generate_json(domains))
 		else:
-			p_cli(generate_cli(domains))
+			for domain in domains:
+				inv = investigate.Investigate(investigate_key)
+				try:
+					whois = inv.domain_whois(domain['domain-name'])
+					if whois["registrantOrganization"] == "Comcast Corporation":
+						continue
+					else:
+						print(json.dumps(domain, indent=4))
+				except Exception as e:
+					print(json.dumps(domain, indent=4))
 
 	bye(0)
 
