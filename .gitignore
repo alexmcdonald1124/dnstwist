@@ -4,3 +4,5 @@ venv/
 .idea
 
 configs/config.json
+
+.DS_Store
